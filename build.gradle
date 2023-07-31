@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 group 'org.example'
@@ -12,8 +14,32 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation group: 'org.eclipse.jetty', name: 'jetty-servlet', version: '11.0.15'
+    implementation group: 'org.eclipse.jetty', name: 'jetty-server', version: '11.0.15'
+    implementation group: 'org.eclipse.jetty', name: 'jetty-webapp', version: '11.0.15'
+    implementation group: 'org.eclipse.jetty', name: 'jetty-security', version: '11.0.15'
+    implementation group: 'org.eclipse.jetty', name: 'jetty-http', version: '11.0.15'
+    implementation group: 'org.eclipse.jetty', name: 'jetty-io', version: '11.0.15'
+    implementation group: 'org.eclipse.jetty', name: 'jetty-util', version: '11.0.15'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '6.2.7.Final'
+    implementation group: 'com.h2database', name: 'h2', version: '2.2.220'
+    implementation group: 'com.opencsv', name: 'opencsv', version: '5.8'
 }
 
 test {
     useJUnitPlatform()
 }
+
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.with {
+        encoding = 'UTF-8'
+    }
+}
+
+shadowJar {
+//    minimize()
+}
+mainClassName = 'org.example.ScrewJournal'
