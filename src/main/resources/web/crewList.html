@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crew List</title>
+</head>
+    <body>
+        <h1>Crew List</h1>
+        <br/>
+        <table border=1>
+            <tr>
+                <th>Name</th>
+                <th>Range</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Flag</th>
+            </tr>
+            <#list pirateList as pirate>
+                <tr>
+                    <td>${pirate.name}</td>
+                    <td>${pirate.range}</td>
+                    <td>${pirate.login}</td>
+                    <td>${pirate.password}</td>
+                    <td>${pirate.flag}</td>
+                </tr>
+            </#list>
+        </table>
+    </body>
+</html>

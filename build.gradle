@@ -24,6 +24,8 @@ dependencies {
     implementation group: 'org.hibernate', name: 'hibernate-core', version: '6.2.7.Final'
     implementation group: 'com.h2database', name: 'h2', version: '2.2.220'
     implementation group: 'com.opencsv', name: 'opencsv', version: '5.8'
+    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.32'
+    implementation group: 'com.google.guava', name: 'guava', version: '32.1.2-jre'
 }
 
 test {
@@ -42,4 +44,4 @@ tasks.withType(JavaCompile) {
 shadowJar {
 //    minimize()
 }
-mainClassName = 'org.example.ScrewJournal'
+mainClassName = 'org.example.CrewJournal'

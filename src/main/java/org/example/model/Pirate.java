@@ -2,39 +2,37 @@ package org.example.model;
 
 import com.opencsv.bean.CsvBindByPosition;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Screw")
+@Table(name = "Crew")
 public class Pirate {
     @Id
+    @GeneratedValue()
     private long id;
-
 
     @CsvBindByPosition(position = 0)
     private String name;
     @CsvBindByPosition(position = 1)
     private String range;
-
+    @CsvBindByPosition(position = 2)
+    private String login;
     @CsvBindByPosition(position = 3)
     private String password;
-
+    @CsvBindByPosition(position = 4)
     private String flag;
 
     public Pirate() {
     }
 
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return this.name;
+    }
+
+    public long getId(){
+        return this.id;
     }
 
     public void setName(String name) {
@@ -65,8 +63,16 @@ public class Pirate {
         this.password = password;
     }
 
+    public String getLogin(){
+        return this.login;
+    }
+
+    public void setLogin(String login){
+        this.login = login;
+    }
+
     @Override
     public String toString(){
-        return "" + id + " " + this.name + " " + this.range + " " + this.password;
+        return "" + id + " " + this.name + " " + this.range + " " + this.login + " " + this.password;
     }
 }
