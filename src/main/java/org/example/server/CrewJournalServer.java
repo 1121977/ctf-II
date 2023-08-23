@@ -1,12 +1,16 @@
 package org.example.server;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.example.dao.PirateDAO;
-import org.example.handler.CrewListHandler;
-import org.example.handler.WelcomePageHandler;
+import org.example.services.AuthService;
 import org.example.services.TemplateProcessor;
+import org.example.servlets.CrewListServlet;
+import org.example.servlets.LoginServlet;
+import org.example.servlets.WelcomePageServlet;
 
 public class CrewJournalServer {
 
@@ -16,11 +20,13 @@ public class CrewJournalServer {
     private final Server server;
     private final PirateDAO pirateDAO;
     private final TemplateProcessor templateProcessor;
+    private final AuthService authService;
 
-    public CrewJournalServer(int webServerPort, PirateDAO pirateDAO, TemplateProcessor templateProcessor) {
+    public CrewJournalServer(int webServerPort, PirateDAO pirateDAO, TemplateProcessor templateProcessor, AuthService authService) {
         this.pirateDAO = pirateDAO;
         this.server = new Server(webServerPort);
         this.templateProcessor = templateProcessor;
+        this.authService = authService;
     }
 
     public void start() throws Exception {
@@ -39,14 +45,19 @@ public class CrewJournalServer {
     }
 
     private void initContext(){
-        ResourceHandler resourceHandler = createResourceHandler();
-//        ServletContextHandler servletContextHandler = createServletContextHandler();
-        HandlerList handlers = new HandlerList();
-        handlers.addHandler(new WelcomePageHandler(templateProcessor, pirateDAO));
-        handlers.addHandler(new CrewListHandler(templateProcessor, pirateDAO));
-        handlers.addHandler(resourceHandler);
+        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+//        ServletContextHandler servletContextHandler = new ServletContextHandler();
+        servletContextHandler.setContextPath("/app");
+        ServletHolder welcomePageServletHolder = new ServletHolder(new WelcomePageServlet(templateProcessor,pirateDAO));
+        servletContextHandler.addServlet(welcomePageServletHolder, "/welcome");
+        ServletHolder crewListServletHolder = new ServletHolder(new CrewListServlet(templateProcessor, pirateDAO));
+        servletContextHandler.addServlet(crewListServletHolder, "/crewList");
+        ServletHolder loginServletHolder = new ServletHolder(new LoginServlet(templateProcessor, pirateDAO, authService));
+        servletContextHandler.addServlet(loginServletHolder, "/login");
+        ServletHolder defaultServletHolder = servletContextHandler.addServlet(DefaultServlet.class, "/");
+        defaultServletHolder.setInitParameter("resourceBase", "src/main/resources/web/static");
 //        handlers.addHandler(applySecurity(servletContextHandler, "/users", "/api/user/*"));
-        server.setHandler(handlers);
+        server.setHandler(servletContextHandler);
     }
 
     private ResourceHandler createResourceHandler() {

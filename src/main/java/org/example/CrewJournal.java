@@ -4,6 +4,8 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.example.dao.PirateDAO;
 import org.example.dao.PirateDAOImpl;
 import org.example.model.Pirate;
+import org.example.services.AuthService;
+import org.example.services.AuthServiceImpl;
 import org.example.services.TemplateProcessor;
 import org.example.services.TemplateProcessorImpl;
 import org.hibernate.SessionFactory;
@@ -47,8 +49,9 @@ public class CrewJournal {
         TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
         List<Pirate> pirateList = pirateDAO.findAll();
         System.out.println("Pirates in list are " + pirateList.size());
+        AuthService authService = new AuthServiceImpl(pirateDAO);
 
-        CrewJournalServer crewJournalServer = new CrewJournalServer(WEB_SERVER_PORT, pirateDAO, templateProcessor);
+        CrewJournalServer crewJournalServer = new CrewJournalServer(WEB_SERVER_PORT, pirateDAO, templateProcessor, authService);
         crewJournalServer.start();
         crewJournalServer.join();
 

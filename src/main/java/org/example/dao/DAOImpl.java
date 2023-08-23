@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public abstract class DAOImpl<T> implements DAO<T>{
 
-    final private SessionFactory sessionFactory;
+    final protected SessionFactory sessionFactory;
     protected Class<T> entityClass;
 
     public DAOImpl(SessionFactory sessionFactory, Class<T> entityClass){
