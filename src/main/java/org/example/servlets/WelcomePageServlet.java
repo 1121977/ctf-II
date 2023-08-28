@@ -18,11 +18,8 @@ public class WelcomePageServlet extends CtfHttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getParameterMap().isEmpty() && request.getSession(false) != null){
-            List<Pirate> pirateList = pirateDAO.findAll();
-            String hashCode = URIGenerator.hashFrom(pirateList);
+        if (request.getSession(false) != null){
             Map<String, Object> hash = new HashMap<>();
-            hash.put("hashCode", hashCode);
             response.getWriter().print(templateProcessor.getPage("index.html", hash));
         } else {
             response.sendRedirect("/app/login");

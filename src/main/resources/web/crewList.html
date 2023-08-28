@@ -13,15 +13,29 @@
                 <th>Range</th>
                 <th>Login</th>
                 <th>Password</th>
-                <th>Flag</th>
+                <th>Passport</th>
+                <th>Email</th>
             </tr>
             <#list pirateList as pirate>
                 <tr>
                     <td>${pirate.name}</td>
                     <td>${pirate.range}</td>
                     <td>${pirate.login}</td>
-                    <td>${pirate.password}</td>
+                    <td>
+                        <#if (pirate.sessionID?length) gt 0>
+                            <form method="post" action="/app/crewList">
+                                <input id="id_field" type="text" name="id_field" value="${pirate.id}" readonly hidden>
+                                <input id="password_field1" type="password" name="password_field1" required value="${pirate.password}" minlength="8">
+                                <br>
+                                <input id="password_field2" type="password" name="password_field2" required value="${pirate.password}" minlength="8">
+                                <p><input type="submit" value="Change"></p>
+                            </form>
+                        <#else>
+                            ***********
+                        </#if>
+                    </td>
                     <td>${pirate.flag}</td>
+                    <td>${pirate.email}</td>
                 </tr>
             </#list>
         </table>

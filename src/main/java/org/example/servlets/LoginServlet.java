@@ -31,16 +31,21 @@ public class LoginServlet extends CtfHttpServlet {
         if (authService.authenticate(map.get("login_field")[0], map.get("password_field")[0])) {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
+            Pirate pirate = pirateDAO.findByLogin(map.get("login_field")[0]).get();
+            pirate.setSessionID(session.getId());
+            pirateDAO.update(pirate);
             response.sendRedirect("/app/welcome");
         } else {
             response.setStatus(SC_UNAUTHORIZED);
+            response.sendRedirect("/app/login");
         }
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        List<Pirate> pirateList = pirateDAO.findAll();
+        List<Pirate> pirateList = pirateDAO.findAll();
         Map<String, Object> hash = new HashMap<>();
+        hash.put("pirateList", pirateList);
         response.getWriter().print(templateProcessor.getPage("login.html", hash));
     }
 }

@@ -23,6 +23,19 @@ public class Pirate {
     private String password;
     @CsvBindByPosition(position = 4)
     private String flag;
+    private String sessionID;
+    @CsvBindByPosition(position = 5)
+    private String email;
+    private String newPassword;
+    private String hashNewAndCurrentPassword;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Pirate() {
     }
@@ -71,8 +84,32 @@ public class Pirate {
         this.login = login;
     }
 
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID){
+        this.sessionID = sessionID;
+    }
+
     @Override
     public String toString(){
-        return "" + id + " " + this.name + " " + this.range + " " + this.login + " " + this.password;
+        return "" + id + " " + this.name + " " + this.range + " " + this.login + " " + this.password + " " + this.email;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getHashNewAndCurrentPassword() {
+        return hashNewAndCurrentPassword;
+    }
+
+    public void setHashNewAndCurrentPassword(String hashNewAndCurrentPassword) {
+        this.hashNewAndCurrentPassword = hashNewAndCurrentPassword;
     }
 }

@@ -13,4 +13,8 @@ public abstract class URIGenerator {
         HashCode hc = hf.newHasher().putUnencodedChars(piratesString).hash();
         return hc.toString();
     }
+
+    static public String hashFrom(String someString){
+        return Hashing.sha256().newHasher().putUnencodedChars(someString).hash().toString();
+    }
 }

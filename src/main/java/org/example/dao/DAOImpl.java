@@ -41,4 +41,16 @@ public abstract class DAOImpl<T> implements DAO<T>{
         session.close();
         return pirateList;
     }
+
+    @Override
+    public void update(T t) {
+        org.hibernate.Transaction tx = null;
+        try (Session session = sessionFactory.openSession()){
+            tx = session.beginTransaction();
+            session.update(t);
+            tx.commit();
+        } catch (Exception e) {
+            if(tx!=null) tx.rollback();
+        }
+    }
 }

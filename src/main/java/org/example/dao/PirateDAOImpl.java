@@ -24,4 +24,14 @@ public class PirateDAOImpl extends DAOImpl<Pirate> implements PirateDAO
         session.close();
         return Optional.of(pirate);
     }
+    @Override
+    public Optional<Pirate> findByhashNewAndCurrentPassword(String hashNewAndCurrentPassword){
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        var query = session.createQuery("select p from " + entityClass.getName() + " p where p.hashNewAndCurrentPassword = :hashNewAndCurrentPassword", entityClass).setParameter("hashNewAndCurrentPassword", hashNewAndCurrentPassword);
+        Pirate pirate = query.getSingleResult();
+        tx.commit();
+        session.close();
+        return Optional.of(pirate);
+    }
 }

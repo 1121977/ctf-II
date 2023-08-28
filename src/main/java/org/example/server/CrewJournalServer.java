@@ -7,7 +7,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.example.dao.PirateDAO;
 import org.example.services.AuthService;
+import org.example.services.MailConfirmation;
 import org.example.services.TemplateProcessor;
+import org.example.servlets.ConfirmServlet;
 import org.example.servlets.CrewListServlet;
 import org.example.servlets.LoginServlet;
 import org.example.servlets.WelcomePageServlet;
@@ -21,12 +23,14 @@ public class CrewJournalServer {
     private final PirateDAO pirateDAO;
     private final TemplateProcessor templateProcessor;
     private final AuthService authService;
+    private final MailConfirmation mailConfirmation;
 
-    public CrewJournalServer(int webServerPort, PirateDAO pirateDAO, TemplateProcessor templateProcessor, AuthService authService) {
+    public CrewJournalServer(int webServerPort, PirateDAO pirateDAO, TemplateProcessor templateProcessor, AuthService authService, MailConfirmation mailConfirmation) {
         this.pirateDAO = pirateDAO;
         this.server = new Server(webServerPort);
         this.templateProcessor = templateProcessor;
         this.authService = authService;
+        this.mailConfirmation = mailConfirmation;
     }
 
     public void start() throws Exception {
@@ -50,20 +54,21 @@ public class CrewJournalServer {
         servletContextHandler.setContextPath("/app");
         ServletHolder welcomePageServletHolder = new ServletHolder(new WelcomePageServlet(templateProcessor,pirateDAO));
         servletContextHandler.addServlet(welcomePageServletHolder, "/welcome");
-        ServletHolder crewListServletHolder = new ServletHolder(new CrewListServlet(templateProcessor, pirateDAO));
+        ServletHolder confirmServletHolder = new ServletHolder(new ConfirmServlet(templateProcessor,pirateDAO));
+        servletContextHandler.addServlet(confirmServletHolder, "/confirm");
+        ServletHolder crewListServletHolder = new ServletHolder(new CrewListServlet(templateProcessor, pirateDAO, mailConfirmation));
         servletContextHandler.addServlet(crewListServletHolder, "/crewList");
         ServletHolder loginServletHolder = new ServletHolder(new LoginServlet(templateProcessor, pirateDAO, authService));
         servletContextHandler.addServlet(loginServletHolder, "/login");
         ServletHolder defaultServletHolder = servletContextHandler.addServlet(DefaultServlet.class, "/");
         defaultServletHolder.setInitParameter("resourceBase", "src/main/resources/web/static");
-//        handlers.addHandler(applySecurity(servletContextHandler, "/users", "/api/user/*"));
+        defaultServletHolder.setInitParameter("dirAllowed", "false");
         server.setHandler(servletContextHandler);
     }
 
     private ResourceHandler createResourceHandler() {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(false);
-//        resourceHandler.setWelcomeFiles(new String[]{START_PAGE_NAME});
         resourceHandler.setResourceBase("src/main/resources/web");
         return resourceHandler;
     }
