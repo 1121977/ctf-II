@@ -10,6 +10,7 @@ public class AuthServiceImpl implements AuthService {
     }
     @Override
     public boolean authenticate(String login, String password) {
-        return pirateDAO.findByLogin(login).get().getPassword().equals(password);
+        var pirateOptional = pirateDAO.findByLogin(login);
+        return pirateOptional.isEmpty()?false:pirateOptional.get().getPassword().equals(password);
     }
 }

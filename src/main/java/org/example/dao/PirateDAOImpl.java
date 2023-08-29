@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import jakarta.persistence.NoResultException;
 import org.example.model.Pirate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,13 +17,15 @@ public class PirateDAOImpl extends DAOImpl<Pirate> implements PirateDAO
 
     @Override
     public Optional<Pirate> findByLogin(String login) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        var query = session.createQuery("select p from " + entityClass.getName() + " p where p.login = :login", entityClass).setParameter("login", login);
-        Pirate pirate = query.getSingleResult();
-        tx.commit();
-        session.close();
-        return Optional.of(pirate);
+        try(Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            var query = session.createQuery("select p from " + entityClass.getName() + " p where p.login = :login", entityClass).setParameter("login", login);
+            Pirate pirate = query.getSingleResult();
+            tx.commit();
+            return Optional.of(pirate);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
     @Override
     public Optional<Pirate> findByhashNewAndCurrentPassword(String hashNewAndCurrentPassword){

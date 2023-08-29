@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.google.gson.annotations.Expose;
 import com.opencsv.bean.CsvBindByPosition;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,9 +17,11 @@ public class Pirate {
     @CsvBindByPosition(position = 0)
     private String name;
     @CsvBindByPosition(position = 1)
-    private String range;
+    private String rank;
+    @Expose
     @CsvBindByPosition(position = 2)
     private String login;
+    @Expose
     @CsvBindByPosition(position = 3)
     private String password;
     @CsvBindByPosition(position = 4)
@@ -52,12 +55,12 @@ public class Pirate {
         this.name = name;
     }
 
-    public String getRange() {
-        return range;
+    public String getRank() {
+        return rank;
     }
 
-    public void setRange(String range) {
-        this.range = range;
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
     public String getFlag() {
@@ -94,7 +97,7 @@ public class Pirate {
 
     @Override
     public String toString(){
-        return "" + id + " " + this.name + " " + this.range + " " + this.login + " " + this.password + " " + this.email;
+        return "" + id + " " + this.name + " " + this.rank + " " + this.login + " " + this.password + " " + this.email;
     }
 
     public String getNewPassword() {

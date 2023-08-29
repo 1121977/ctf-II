@@ -10,7 +10,7 @@
         <table border=1>
             <tr>
                 <th>Name</th>
-                <th>Range</th>
+                <th>Rank</th>
                 <th>Login</th>
                 <th>Password</th>
                 <th>Passport</th>
@@ -19,15 +19,15 @@
             <#list pirateList as pirate>
                 <tr>
                     <td>${pirate.name}</td>
-                    <td>${pirate.range}</td>
+                    <td>${pirate.rank}</td>
                     <td>${pirate.login}</td>
                     <td>
                         <#if (pirate.sessionID?length) gt 0>
-                            <form method="post" action="/app/crewList">
+                            <form method="post" action="/app/crewList" onsubmit="return passwordControl();">
                                 <input id="id_field" type="text" name="id_field" value="${pirate.id}" readonly hidden>
-                                <input id="password_field1" type="password" name="password_field1" required value="${pirate.password}" minlength="8">
+                                <input id="password_field1" type="password" name="password_field1" required value="${pirate.password}" minlength="8" class="password_field">
                                 <br>
-                                <input id="password_field2" type="password" name="password_field2" required value="${pirate.password}" minlength="8">
+                                <input id="password_field2" type="password" name="password_field2" required value="${pirate.password}" minlength="8" class="password_field">
                                 <p><input type="submit" value="Change"></p>
                             </form>
                         <#else>
@@ -39,5 +39,6 @@
                 </tr>
             </#list>
         </table>
+    <script src="js/crewList.js"></script>
     </body>
 </html>

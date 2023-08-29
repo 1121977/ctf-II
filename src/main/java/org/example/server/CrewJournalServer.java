@@ -13,6 +13,7 @@ import org.example.servlets.ConfirmServlet;
 import org.example.servlets.CrewListServlet;
 import org.example.servlets.LoginServlet;
 import org.example.servlets.WelcomePageServlet;
+import org.example.servlets.api.PirateServlet;
 
 public class CrewJournalServer {
 
@@ -50,7 +51,6 @@ public class CrewJournalServer {
 
     private void initContext(){
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-//        ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/app");
         ServletHolder welcomePageServletHolder = new ServletHolder(new WelcomePageServlet(templateProcessor,pirateDAO));
         servletContextHandler.addServlet(welcomePageServletHolder, "/welcome");
@@ -61,6 +61,8 @@ public class CrewJournalServer {
         ServletHolder loginServletHolder = new ServletHolder(new LoginServlet(templateProcessor, pirateDAO, authService));
         servletContextHandler.addServlet(loginServletHolder, "/login");
         ServletHolder defaultServletHolder = servletContextHandler.addServlet(DefaultServlet.class, "/");
+        ServletHolder pirateServletHolder = new ServletHolder(new PirateServlet(templateProcessor,pirateDAO));
+        servletContextHandler.addServlet(pirateServletHolder, "/api/pirate");
         defaultServletHolder.setInitParameter("resourceBase", "src/main/resources/web/static");
         defaultServletHolder.setInitParameter("dirAllowed", "false");
         server.setHandler(servletContextHandler);
