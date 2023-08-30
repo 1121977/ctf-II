@@ -5,8 +5,6 @@ import org.example.model.Pirate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-import java.util.List;
 import java.util.Optional;
 
 public class PirateDAOImpl extends DAOImpl<Pirate> implements PirateDAO
@@ -36,5 +34,16 @@ public class PirateDAOImpl extends DAOImpl<Pirate> implements PirateDAO
         tx.commit();
         session.close();
         return Optional.of(pirate);
+    }
+
+    @Override
+    public String findFlagByFlagHash(String flagHash) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        var query = session.createQuery("select p.flag from " + entityClass.getName() + " p where p.flagHash = :flagHash", String.class).setParameter("flagHash", flagHash);
+        String flag = query.getSingleResult();
+        tx.commit();
+        session.close();
+        return flag;
     }
 }

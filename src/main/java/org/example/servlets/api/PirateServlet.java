@@ -9,7 +9,9 @@ import org.example.dao.PirateDAO;
 import org.example.model.Pirate;
 import org.example.services.TemplateProcessor;
 import org.example.servlets.CtfHttpServlet;
+
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class PirateServlet extends CtfHttpServlet {
 
@@ -21,10 +23,16 @@ public class PirateServlet extends CtfHttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String login = request.getParameter("login");
-        Pirate pirate = pirateDAO.findByLogin(login).get();
         response.setContentType("application/json;charset=UTF-8");
-        ServletOutputStream out = response.getOutputStream();
-        out.print(gson.toJson(pirate));
+/*        if (request.getParameter("login") != null) {
+            String login = request.getParameter("login");
+            Pirate pirate = pirateDAO.findByLogin(login).get();
+           response.setContentType("application/json;charset=UTF-8");
+            ServletOutputStream out = response.getOutputStream();
+            out.print(gson.toJson(pirate));
+        } else {*/
+            var pirateList = pirateDAO.findAll().stream().filter(pirate -> !pirate.getRank().equals("young")).collect(Collectors.toList());
+            response.getOutputStream().print(gson.toJson(pirateList));
+//        }
     }
 }

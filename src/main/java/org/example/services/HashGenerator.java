@@ -4,7 +4,7 @@ import com.google.common.hash.*;
 import org.example.model.Pirate;
 import java.util.List;
 
-public abstract class URIGenerator {
+public abstract class HashGenerator {
     static public String hashFrom(List<Pirate> pirateList){
         String piratesString = "";
         for(Pirate pirate: pirateList)

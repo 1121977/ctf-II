@@ -6,9 +6,8 @@ import jakarta.servlet.http.HttpSession;
 import org.example.dao.PirateDAO;
 import org.example.model.Pirate;
 import org.example.services.AuthService;
-import org.example.services.AuthServiceImpl;
 import org.example.services.TemplateProcessor;
-import org.example.services.URIGenerator;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;

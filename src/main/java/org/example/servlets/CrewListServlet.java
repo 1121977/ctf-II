@@ -8,11 +8,10 @@ import org.example.dao.PirateDAO;
 import org.example.model.Pirate;
 import org.example.services.MailConfirmation;
 import org.example.services.TemplateProcessor;
-import org.example.services.URIGenerator;
-import javax.mail.internet.InternetAddress;
+import org.example.services.HashGenerator;
+
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class CrewListServlet extends CtfHttpServlet {
             for (Pirate pirate : pirateList) {
                 if (Long.parseLong(map.get("id_field")[0]) == pirate.getId()) {
                     pirate.setNewPassword(map.get("password_field1")[0]);
-                    String passwordsHash = URIGenerator.hashFrom(pirate.getPassword() + pirate.getNewPassword());
+                    String passwordsHash = HashGenerator.hashFrom(pirate.getPassword() + pirate.getNewPassword());
                     pirate.setHashNewAndCurrentPassword(passwordsHash);
                     pirateDAO.update(pirate);
 //                    var network  = NetworkInterface.getNetworkInterfaces();

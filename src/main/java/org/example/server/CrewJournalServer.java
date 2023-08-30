@@ -9,10 +9,7 @@ import org.example.dao.PirateDAO;
 import org.example.services.AuthService;
 import org.example.services.MailConfirmation;
 import org.example.services.TemplateProcessor;
-import org.example.servlets.ConfirmServlet;
-import org.example.servlets.CrewListServlet;
-import org.example.servlets.LoginServlet;
-import org.example.servlets.WelcomePageServlet;
+import org.example.servlets.*;
 import org.example.servlets.api.PirateServlet;
 
 public class CrewJournalServer {
@@ -58,11 +55,15 @@ public class CrewJournalServer {
         servletContextHandler.addServlet(confirmServletHolder, "/confirm");
         ServletHolder crewListServletHolder = new ServletHolder(new CrewListServlet(templateProcessor, pirateDAO, mailConfirmation));
         servletContextHandler.addServlet(crewListServletHolder, "/crewList");
+        ServletHolder addPirateServletHolder = new ServletHolder(new AddPirate(templateProcessor, pirateDAO));
+        servletContextHandler.addServlet(addPirateServletHolder, "/addPirate");
         ServletHolder loginServletHolder = new ServletHolder(new LoginServlet(templateProcessor, pirateDAO, authService));
         servletContextHandler.addServlet(loginServletHolder, "/login");
         ServletHolder defaultServletHolder = servletContextHandler.addServlet(DefaultServlet.class, "/");
         ServletHolder pirateServletHolder = new ServletHolder(new PirateServlet(templateProcessor,pirateDAO));
-        servletContextHandler.addServlet(pirateServletHolder, "/api/pirate");
+        servletContextHandler.addServlet(pirateServletHolder, "/api/pirates");
+        ServletHolder flagFromFlagHashServletHolder = new ServletHolder(new FlagFromFlagHashServlet(templateProcessor,pirateDAO));
+        servletContextHandler.addServlet(flagFromFlagHashServletHolder, "/getFlagFromFlagHash");
         defaultServletHolder.setInitParameter("resourceBase", "src/main/resources/web/static");
         defaultServletHolder.setInitParameter("dirAllowed", "false");
         server.setHandler(servletContextHandler);

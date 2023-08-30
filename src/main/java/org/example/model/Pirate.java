@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.example.services.HashGenerator;
 
 @Entity
 @Table(name = "Crew")
@@ -31,6 +32,7 @@ public class Pirate {
     private String email;
     private String newPassword;
     private String hashNewAndCurrentPassword;
+    private String flagHash;
 
     public String getEmail() {
         return email;
@@ -73,6 +75,7 @@ public class Pirate {
 
     public void setFlag(String flag) {
         this.flag = flag;
+        this.flagHash = HashGenerator.hashFrom(this.flag);
     }
 
     public void setPassword(String password) {
