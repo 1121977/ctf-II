@@ -37,10 +37,10 @@ public class PirateDAOImpl extends DAOImpl<Pirate> implements PirateDAO
     }
 
     @Override
-    public String findFlagByFlagHash(String flagHash) {
+    public String findPassportByMarque(String marque) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        var query = session.createQuery("select p.flag from " + entityClass.getName() + " p where p.flagHash = :flagHash", String.class).setParameter("flagHash", flagHash);
+        var query = session.createQuery("select p.passport from " + entityClass.getName() + " p where p.marque = :marque", String.class).setParameter("marque", marque);
         String flag = query.getSingleResult();
         tx.commit();
         session.close();

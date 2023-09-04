@@ -3,6 +3,7 @@ package org.example.servlets;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dao.PirateDAO;
+import org.example.server.CrewJournalServer;
 import org.example.services.TemplateProcessor;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class WelcomePageServlet extends CtfHttpServlet {
         if (request.getSession(false) != null){
             Map<String, Object> hash = new HashMap<>();
             response.getWriter().print(templateProcessor.getPage("index.html", hash));
+            CrewJournalServer.logger.info("from {}", request.getRequestURI());
         } else {
             response.sendRedirect("/app/login");
         }

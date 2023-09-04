@@ -26,13 +26,13 @@ public class Pirate {
     @CsvBindByPosition(position = 3)
     private String password;
     @CsvBindByPosition(position = 4)
-    private String flag;
+    private String passport;    //The flag
     private String sessionID;
     @CsvBindByPosition(position = 5)
     private String email;
     private String newPassword;
     private String hashNewAndCurrentPassword;
-    private String flagHash;
+    private String marque;  //The flag hash
 
     public String getEmail() {
         return email;
@@ -65,17 +65,17 @@ public class Pirate {
         this.rank = rank;
     }
 
-    public String getFlag() {
-        return flag;
+    public String getPassport() {
+        return passport;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setFlag(String flag) {
-        this.flag = flag;
-        this.flagHash = HashGenerator.hashFrom(this.flag);
+    public void setPassport(String passport) {
+        this.passport = passport;
+        this.marque = HashGenerator.hashFrom(this.passport);
     }
 
     public void setPassword(String password) {

@@ -3,10 +3,11 @@ let login_div = document.getElementsByClassName("login")[0];
 let pirate=null;
 let pirates;
 let ds = null;
+let sha256_field = null;
 fetch('http://localhost:8080/app/api/pirates').then(response => response.json()).then(data => pirates = data);
 
-function authenticatePirate(){
-    let sha256_field = document.createElement("input");
+async function authenticatePirate(){
+    sha256_field = document.createElement("input");
     sha256_field.id = "sha256_field";
     sha256_field.name = "sha256_field";
     sha256_field.value = "";
@@ -18,6 +19,7 @@ function authenticatePirate(){
     for(let p of pirates){
         if(p.login == login && p.password == password){
             pirate = p;
+            // ds = await digestMessage(login + password);
             return true;
         }
     }
@@ -25,7 +27,8 @@ function authenticatePirate(){
 }
 
 //login_div.onsubmit = sendForm;
-login_form.onsubmit = authenticatePirate;
+// login_form.onsubmit = authenticatePirate;
+login_form.onsubit = sendForm;
 
 async function digestMessage(message) {
   const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
@@ -38,10 +41,6 @@ async function digestMessage(message) {
 }
 
 function sendForm(){
-  if(pirate!=null){
-    ds.then(digestHex=> digestHex);
-    return true;
-  } else {
-    return false;
-  }
+  let a = authenticatePirate().then(some => digestMessage(pirate.login + pirate.password)).then(hex => sha256_field.value = hex);
+  return true;
 }

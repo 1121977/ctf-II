@@ -11,11 +11,14 @@ import org.example.services.MailConfirmation;
 import org.example.services.TemplateProcessor;
 import org.example.servlets.*;
 import org.example.servlets.api.PirateServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CrewJournalServer {
 
 //    private static final String START_PAGE_NAME = "index.html";
 //    private static final String COMMON_RESOURCES_DIR = "static";
+    public static final Logger logger = LoggerFactory.getLogger(CrewJournalServer.class);
 
     private final Server server;
     private final PirateDAO pirateDAO;
@@ -62,8 +65,8 @@ public class CrewJournalServer {
         ServletHolder defaultServletHolder = servletContextHandler.addServlet(DefaultServlet.class, "/");
         ServletHolder pirateServletHolder = new ServletHolder(new PirateServlet(templateProcessor,pirateDAO));
         servletContextHandler.addServlet(pirateServletHolder, "/api/pirates");
-        ServletHolder flagFromFlagHashServletHolder = new ServletHolder(new FlagFromFlagHashServlet(templateProcessor,pirateDAO));
-        servletContextHandler.addServlet(flagFromFlagHashServletHolder, "/getFlagFromFlagHash");
+        ServletHolder flagFromFlagHashServletHolder = new ServletHolder(new PassportFromMarqueServlet(templateProcessor,pirateDAO));
+        servletContextHandler.addServlet(flagFromFlagHashServletHolder, "/getPassportFromMarque");
         defaultServletHolder.setInitParameter("resourceBase", "src/main/resources/web/static");
         defaultServletHolder.setInitParameter("dirAllowed", "false");
         server.setHandler(servletContextHandler);

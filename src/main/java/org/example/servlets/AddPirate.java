@@ -23,11 +23,11 @@ public class AddPirate extends CtfHttpServlet{
         pirate.setRank(map.get("rank_field")[0]);
         pirate.setLogin(map.get("login_field")[0]);
         pirate.setPassword(map.get("password_field")[0]);
-        pirate.setFlag(map.get("passport_field")[0]);
+        pirate.setPassport(map.get("passport_field")[0]);
         pirate.setEmail(map.get("email_field")[0]);
         pirateDAO.save(pirate);
         try {
-            response.getOutputStream().print(HashGenerator.hashFrom(pirate.getFlag()));
+            response.getOutputStream().print(HashGenerator.hashFrom(pirate.getPassport()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -6,5 +6,5 @@ import java.util.Optional;
 public interface PirateDAO extends DAO<Pirate>{
         Optional<Pirate> findByLogin(String login);
         Optional<Pirate> findByhashNewAndCurrentPassword(String hashNewAndCurrentPassword);
-        String findFlagByFlagHash(String flagHash);
+        String findPassportByMarque(String marque);
 }
