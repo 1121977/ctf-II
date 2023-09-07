@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class CrewJournal {
-    private static final int WEB_SERVER_PORT = 8080;
+    private static final int WEB_SERVER_PORT = 9000;
 //    private static final String TEMPLATES_DIR = "/home/renatka/bankProject/CTFService/src/main/resources/web";
     private static final String TEMPLATES_DIR = "src/main/resources/web";
     public static final String HIBERNATE_CFG_FILE = "hibernate.cfg.xml";
@@ -27,28 +27,21 @@ public class CrewJournal {
         SessionFactory sessionFactory = new MetadataSources(new StandardServiceRegistryBuilder().configure(HIBERNATE_CFG_FILE).build())
                 .addAnnotatedClass(Pirate.class).buildMetadata().buildSessionFactory();
         PirateDAO pirateDAO = new PirateDAOImpl(sessionFactory);
+        String ipAddress = null;
         for (int i=0; i<args.length; i++){
             if (args[i].equals("-csvInput") && i < args.length - 1) {
                 csvFileName = args[i + 1];
-                break;
+            }
+            if (args[i].equals("-ip") && i < args.length - 1) {
+                ipAddress = args[i+1];
             }
         }
         if(csvFileName!=null){
-            try(FileReader fileReader = new FileReader(csvFileName)) {
-                List<Pirate> pirateList = new CsvToBeanBuilder<Pirate>(fileReader)
-                        .withType(Pirate.class)
-                        .withSeparator(';')
-                        .build().parse();
-                pirateList.forEach(pirateDAO::save);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+            dbInit(csvFileName, pirateDAO);
         }
         TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
-        List<Pirate> pirateList = pirateDAO.findAll();
-        System.out.println("Pirates in list are " + pirateList.size());
         AuthService authService = new AuthServiceImpl(pirateDAO);
-        MailConfirmation mailConfirmation  = new MailConfirmation();
+        MailConfirmation mailConfirmation  = new MailConfirmation(ipAddress);
         CrewJournalServer crewJournalServer = new CrewJournalServer(WEB_SERVER_PORT, pirateDAO, templateProcessor, authService, mailConfirmation);
         crewJournalServer.start();
         crewJournalServer.join();
@@ -56,5 +49,17 @@ public class CrewJournal {
 
     public static int getWebServerPort(){
         return WEB_SERVER_PORT;
+    }
+
+    private static void dbInit(String csvFileName, PirateDAO pirateDAO){
+        try(FileReader fileReader = new FileReader(csvFileName)) {
+            List<Pirate> pirateList = new CsvToBeanBuilder<Pirate>(fileReader)
+                    .withType(Pirate.class)
+                    .withSeparator(';')
+                    .build().parse();
+            pirateList.stream().filter(pirate -> pirateDAO.findByLogin(pirate.getLogin()).isEmpty()).forEach(pirateDAO::save);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

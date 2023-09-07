@@ -11,7 +11,7 @@
         <encoder>
             <pattern>%date %level [%file:%line] %msg%n</pattern>
         </encoder>
-        <rollingPolicy class="c             h.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>logs/archive/app-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
             <!-- each file should be at most 1MB, keep 60 days worth of history, but at most 20MB -->
             <maxFileSize>1MB</maxFileSize>

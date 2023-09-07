@@ -45,3 +45,4 @@ out
 
 #Data files
 *.csv
+*.db

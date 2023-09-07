@@ -16,8 +16,6 @@ import org.slf4j.LoggerFactory;
 
 public class CrewJournalServer {
 
-//    private static final String START_PAGE_NAME = "index.html";
-//    private static final String COMMON_RESOURCES_DIR = "static";
     public static final Logger logger = LoggerFactory.getLogger(CrewJournalServer.class);
 
     private final Server server;

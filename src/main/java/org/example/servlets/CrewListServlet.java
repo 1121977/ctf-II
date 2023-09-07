@@ -53,9 +53,8 @@ public class CrewListServlet extends CtfHttpServlet {
                     String passwordsHash = HashGenerator.hashFrom(pirate.getPassword() + pirate.getNewPassword());
                     pirate.setHashNewAndCurrentPassword(passwordsHash);
                     pirateDAO.update(pirate);
-//                    var network  = NetworkInterface.getNetworkInterfaces();
                     String bodyText = "<p>Dear " + pirate.getName() + ", to complete your password changing, please go to this link: <a " + "href=\"http://"
-                        + InetAddress.getLocalHost().getHostAddress() + stringRepresentateWebPort() + "/app/confirm?hash=" + passwordsHash + "\">Confirm</a></p>";
+                        + mailConfirmation.getIpAddress() + stringRepresentateWebPort() + "/app/confirm?hash=" + passwordsHash + "\">Confirm</a></p>";
                     mailConfirmation.sendEmail(pirate.getEmail(), "renatka@mail.ru", "dPPpmKzay1R5tzA4XeUR", "Confirm password changing", bodyText);
                     break;
                 }

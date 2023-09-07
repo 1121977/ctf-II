@@ -10,8 +10,11 @@ import javax.mail.Transport;
 
 public class MailConfirmation {
 
+    private final String ipAddress;
 
-    public MailConfirmation() {    }
+    public MailConfirmation(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
 
     public void sendEmail(String toEmailAddress, String fromEmailAddress, String appPassword, String subject,
                           String bodyText) {
@@ -35,5 +38,9 @@ public class MailConfirmation {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getIpAddress(){
+        return this.ipAddress;
     }
 }
