@@ -5,16 +5,13 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import javax.mail.Transport;
 
 public class MailConfirmation {
 
-    private final String ipAddress;
-
-    public MailConfirmation(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
+    public MailConfirmation() {    }
 
     public void sendEmail(String toEmailAddress, String fromEmailAddress, String appPassword, String subject,
                           String bodyText) {
@@ -27,20 +24,16 @@ public class MailConfirmation {
         Session session = Session.getDefaultInstance(prop);
         Message message = new MimeMessage(session);
         try {
-            message.setFrom(new InternetAddress(fromEmailAddress));
+            message.setFrom(new InternetAddress(fromEmailAddress, "CTF Crew"));
             message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress)); // setting "TO" email address
-            message.setSubject(subject); // setting subject
-            message.setContent(bodyText, "text/html"); // setting body
+            message.setSubject(subject);
+            message.setContent(bodyText, "text/html");
             Transport t = session.getTransport("smtp");
             t.connect(fromEmailAddress,  appPassword);
             t.sendMessage(message, message.getAllRecipients());
             t.close();
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getIpAddress(){
-        return this.ipAddress;
     }
 }

@@ -2,6 +2,9 @@ package org.example.services;
 
 import com.google.common.hash.*;
 import org.example.model.Pirate;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public abstract class HashGenerator {
@@ -14,7 +17,19 @@ public abstract class HashGenerator {
         return hc.toString();
     }
 
-    static public String hashFrom(String someString){
-        return Hashing.sha256().newHasher().putUnencodedChars(someString).hash().toString();
+    static public String hashFrom(String someString) {
+        String sha ="";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(someString.getBytes("UTF-8"));
+            byte byteArr [] = md.digest();
+            for(byte b: byteArr){
+                String bHex = Integer.toHexString(0xff & b);
+                sha += bHex.length() == 1?"0" + bHex:bHex;
+            }
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return sha;
     }
 }
