@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dao.PirateDAO;
 import org.example.model.Pirate;
+import org.example.server.CrewJournalServer;
 import org.example.services.HashGenerator;
 import org.example.services.TemplateProcessor;
 
@@ -31,5 +32,6 @@ public class AddPirate extends CtfHttpServlet{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        CrewJournalServer.logger.info("from {} req: {} POST Request. Pirate ({}) is added", request.getRemoteAddr(), request.getRequestURL(), pirate);
     }
 }

@@ -26,12 +26,11 @@ public class LoginServlet extends CtfHttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CrewJournalServer.logger.info("from {} requested {}", request.getRemoteAddr(), request.getRequestURI());
         var map  =  request.getParameterMap();
 //        if (authService.authenticate(map.get("login_field")[0], map.get("password_field")[0])) {
         var pirates = pirateDAO.findAll();
         for (Pirate pirate: pirates) {
-            if (map.get("sha256_field")[0].equals(HashGenerator.hashFrom(pirate.getLogin() + pirate.getPassword()))) {
+            if (map.get("hash_field") != null && map.get("hash_field")[0].equals(HashGenerator.myWeekHash(pirate.getLogin() + pirate.getPassword()))) {
 //            String hash = HashGenerator.hashFrom(map.get("login_field")[0] + map.get("password_field")[0]);
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
@@ -39,12 +38,12 @@ public class LoginServlet extends CtfHttpServlet {
                 pirate.setSessionID(session.getId());
                 pirateDAO.update(pirate);
                 response.sendRedirect("/app/welcome");
-                CrewJournalServer.logger.info("from {} requested {} with successful authentication", request.getRemoteAddr(), request.getRequestURI());
+                CrewJournalServer.logger.info("from {} req: {} POST Request with successful authentication by {}password", request.getRemoteAddr(), request.getRequestURL(), pirate.getPassword().equals("someBody")?"some ":"");
                 return;
             }
         }
         response.setStatus(SC_UNAUTHORIZED);
-        CrewJournalServer.logger.info("from {} requested {} with unsuccessful authentication", request.getRemoteAddr(), request.getRequestURI());
+        CrewJournalServer.logger.info("from {} req: {} POST Request with unsuccessful authentication", request.getRemoteAddr(), request.getRequestURL());
         response.sendRedirect("/app/login");
     }
 

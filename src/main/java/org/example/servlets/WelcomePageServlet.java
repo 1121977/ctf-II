@@ -20,7 +20,6 @@ public class WelcomePageServlet extends CtfHttpServlet {
         if (request.getSession(false) != null){
             Map<String, Object> hash = new HashMap<>();
             response.getWriter().print(templateProcessor.getPage("index.html", hash));
-            CrewJournalServer.logger.info("from {}", request.getRequestURI());
         } else {
             response.sendRedirect("/app/login");
         }

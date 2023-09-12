@@ -5,11 +5,11 @@ let sha256_field = null;
 fetch('/app/api/pirates').then(response => response.json()).then(data => pirates = data);
 
 function authenticatePirate(){
-    sha256_field = document.createElement("input");
-    sha256_field.id = "sha256_field";
-    sha256_field.name = "sha256_field";
-    sha256_field.value = "";
-//    sha256_field.hidden = "no";
+    hash_field = document.createElement("input");
+    hash_field.id = "hash_field";
+    hash_field.name = "hash_field";
+    hash_field.value = "";
+    hash_field.hidden = "yes";
     let login_field = login_form.querySelector("#login_field");
     let password_field = login_form.querySelector("#password_field");
     let login = login_field.value;
@@ -17,7 +17,7 @@ function authenticatePirate(){
     for(let p of pirates){
         if(p.login == login && p.password == password){
             pirate = p;
-            login_form.appendChild(sha256_field);
+            login_form.appendChild(hash_field);
             return true;
         }
     }
@@ -25,31 +25,32 @@ function authenticatePirate(){
 }
 
 login_form.addEventListener("submit", function (e) {
-    e.preventDefault();
+//    e.preventDefault();
     if(authenticatePirate()){
         const passwordInput = pirate.login + pirate.password;
-        crypto.subtle.digest("SHA-256", new TextEncoder().encode(passwordInput)).then(function (hashBuffer) {
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-            sha256_field.value = hashHex;
-            login_form.submit();
-        });
+        hash_field.value = myWeekHash(passwordInput);
+//        login_form.submit();
     } else {
         password_field.value = "";
-        return false;
+//        return false;
     }
 });
 
-/*     const form = document.querySelector("form");
-       form.addEventListener("submit", function (e) {
-           e.preventDefault();
-           const passwordInput = this.querySelector("input[type=password]");
-           crypto.subtle.digest("SHA-384", new TextEncoder().encode(passwordInput.value)).then(function (hashBuffer) {
-               const hashArray = Array.from(new Uint8Array(hashBuffer));
-               const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-               passwordInput.value = hashHex;
-               form.submit();
-           });
-       });
-
-       */
+function myWeekHash(data)
+{
+    if (data.length == 0)
+        return "";
+    let bytes = data.split('').map(s => s.charCodeAt(0));
+    let padding_length = (Math.floor(bytes.length/8) + 1) * 8 - bytes.length;
+    for(let i = 0; i < padding_length; i++){
+        bytes.push(bytes[i]);
+    }
+    let resultBytes = "CTF!B0dy".split('').map(s => s.charCodeAt(0));
+    for (let i = 0; i < bytes.length / 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            resultBytes[j] ^= bytes[i * 8 + j];
+        }
+    }
+    const hashHex = resultBytes.map((b) => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
