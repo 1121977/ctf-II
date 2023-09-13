@@ -49,7 +49,7 @@ public class CrewJournalServer {
 
     private void initContext(){
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.setContextPath("/app");
+        servletContextHandler.setContextPath("/");
         ServletHolder welcomePageServletHolder = new ServletHolder(new WelcomePageServlet(templateProcessor,pirateDAO));
         servletContextHandler.addServlet(welcomePageServletHolder, "/welcome");
         ServletHolder confirmServletHolder = new ServletHolder(new ConfirmServlet(templateProcessor,pirateDAO));
@@ -67,6 +67,7 @@ public class CrewJournalServer {
         servletContextHandler.addServlet(flagFromFlagHashServletHolder, "/getPassportFromMarque");
         defaultServletHolder.setInitParameter("resourceBase", "src/main/resources/web/static");
         defaultServletHolder.setInitParameter("dirAllowed", "false");
+        servletContextHandler.setWelcomeFiles(new String[]{"login.html"});
         server.setHandler(servletContextHandler);
     }
 

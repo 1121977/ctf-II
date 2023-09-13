@@ -40,7 +40,7 @@ public class CrewListServlet extends CtfHttpServlet {
             hash.put("isUserCaptain", isUserCaptain);
             response.getWriter().print(templateProcessor.getPage("crewList.html", hash));
         } else {
-            response.sendRedirect("/app/login");
+            response.sendRedirect("/login");
         }
     }
 
@@ -56,7 +56,7 @@ public class CrewListServlet extends CtfHttpServlet {
                         String passwordsHash = HashGenerator.hashFrom(pirate.getPassword() + pirate.getNewPassword());
                         pirate.setHashNewAndCurrentPassword(passwordsHash);
                         String bodyText = "<p>Dear " + pirate.getName() + ", to complete your password changing, please go to this link: <a " + "href=\"http://"
-                        + request.getHeader("Host") + "/app/confirm?hash=" + passwordsHash + "\">Confirm</a></p>";
+                        + request.getHeader("Host") + "/confirm?hash=" + passwordsHash + "\">Confirm</a></p>";
                         mailConfirmation.sendEmail(pirate.getEmail(), "ctf-crew@mail.ru", "TU0y235LtjRDbrJ9mN06", "Confirm password changing", bodyText);
                     }
                     if(map.containsKey("email_field")) {
@@ -69,9 +69,9 @@ public class CrewListServlet extends CtfHttpServlet {
                     break;
                 }
             }
-            response.sendRedirect("/app/crewList");
+            response.sendRedirect("/crewList");
         } else {
-            response.sendRedirect("/app/login");
+            response.sendRedirect("/login");
         }
     }
 }

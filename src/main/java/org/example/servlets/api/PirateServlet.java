@@ -21,7 +21,7 @@ public class PirateServlet extends CtfHttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CrewJournalServer.logger.info("from {} requested {}", request.getRemoteAddr(), request.getRequestURI());
+        CrewJournalServer.logger.info("from {} req: {} GET Request", request.getRemoteAddr(), request.getRequestURI());
         response.setContentType("application/json;charset=UTF-8");
         var pirateList = pirateDAO.findAll().stream().filter(pirate -> !pirate.getRank().equals("young")).collect(Collectors.toList());
         response.getOutputStream().print(gson.toJson(pirateList));

@@ -21,7 +21,7 @@ public class WelcomePageServlet extends CtfHttpServlet {
             Map<String, Object> hash = new HashMap<>();
             response.getWriter().print(templateProcessor.getPage("index.html", hash));
         } else {
-            response.sendRedirect("/app/login");
+            response.sendRedirect("/login");
         }
     }
 

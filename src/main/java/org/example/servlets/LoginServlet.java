@@ -37,14 +37,14 @@ public class LoginServlet extends CtfHttpServlet {
 //            Pirate pirate = pirateDAO.findByLogin(map.get("login_field")[0]).get();
                 pirate.setSessionID(session.getId());
                 pirateDAO.update(pirate);
-                response.sendRedirect("/app/welcome");
+                response.sendRedirect("/welcome");
                 CrewJournalServer.logger.info("from {} req: {} POST Request with successful authentication by {}password", request.getRemoteAddr(), request.getRequestURL(), pirate.getPassword().equals("someBody")?"some ":"");
                 return;
             }
         }
         response.setStatus(SC_UNAUTHORIZED);
         CrewJournalServer.logger.info("from {} req: {} POST Request with unsuccessful authentication", request.getRemoteAddr(), request.getRequestURL());
-        response.sendRedirect("/app/login");
+        response.sendRedirect("/login");
     }
 
     @Override

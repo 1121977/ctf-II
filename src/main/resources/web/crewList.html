@@ -26,7 +26,7 @@
                         <td class="name">${pirate.name}</td>
                         <td class="rank">
                             <#if isUserCaptain == true>
-                            <form method="post" action="/app/crewList" class="rank_change_form">
+                            <form method="post" action="/crewList" class="rank_change_form">
                                 <input class="id_field" type="text" name="id_field" value="${pirate.id}" readonly hidden>
                                 <input id="rank_field" type="text" value="${pirate.rank}" name="rank_field" required class="rank_field">
                                 <br>
@@ -38,7 +38,7 @@
                         <td class="login">${pirate.login}</td>
                         <td class="password">
                             <#if (pirate.sessionID?length) gt 0>
-                                <form method="post" action="/app/crewList" onsubmit="passwordControl();" class="password_change_form">
+                                <form method="post" action="/crewList" onsubmit="passwordControl();" class="password_change_form">
                                     <input class="id_field" type="text" name="id_field" value="${pirate.id}" readonly hidden>
                                     <input id="password_field1" type="password" name="password_field1" required value="12345" minlength="8" class="password_field">
                                     <br>
@@ -56,7 +56,7 @@
                         <td class="passport">${pirate.passport}</td>
                         <td class="email">
                             <#if (pirate.email == "some@mail.some") && ((pirate.sessionID?length) gt 0)>
-                                <form method="post" action="/app/crewList" onsubmit="return passwordControl();">
+                                <form method="post" action="/crewList">
                                     <input class="id_field" type="text" name="id_field" value="${pirate.id}" readonly hidden>
                                     <input id="email_field" type="email" name="email_field" required value="some@mail.some" class="email_field">
                                     <p><input type="submit" value="Change"></p>

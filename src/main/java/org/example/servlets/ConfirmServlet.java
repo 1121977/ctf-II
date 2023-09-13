@@ -22,7 +22,7 @@ public class ConfirmServlet extends CtfHttpServlet {
             pirate.setNewPassword(null);
             pirate.setHashNewAndCurrentPassword(null);
             pirateDAO.update(pirate);
-            response.sendRedirect("/app/welcome");
+            response.sendRedirect("/welcome");
         }
     }
 }

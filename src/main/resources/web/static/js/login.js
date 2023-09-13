@@ -2,7 +2,7 @@ let login_form = document.getElementsByClassName("login_form")[0];
 let pirate=null;
 let pirates;
 let sha256_field = null;
-fetch('/app/api/pirates').then(response => response.json()).then(data => pirates = data);
+fetch('/api/pirates').then(response => response.json()).then(data => pirates = data);
 
 function authenticatePirate(){
     hash_field = document.createElement("input");
