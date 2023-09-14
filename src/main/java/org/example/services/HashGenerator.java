@@ -34,7 +34,7 @@ public abstract class HashGenerator {
         return sha;
     }
 
-    static public String myWeekHash(String data) throws UnsupportedEncodingException {
+    static public String myWeakHash(String data) throws UnsupportedEncodingException {
         if (data.length()==0)
             return "";
         byte originalBytes [] = data.getBytes("UTF-8");

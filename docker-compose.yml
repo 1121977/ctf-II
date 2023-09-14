@@ -10,3 +10,4 @@ services:
                         - ./data:/data
                         - ./src:/src
                         - ./build:/build
+                restart: always

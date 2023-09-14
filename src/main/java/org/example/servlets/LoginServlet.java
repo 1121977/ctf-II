@@ -30,7 +30,7 @@ public class LoginServlet extends CtfHttpServlet {
 //        if (authService.authenticate(map.get("login_field")[0], map.get("password_field")[0])) {
         var pirates = pirateDAO.findAll();
         for (Pirate pirate: pirates) {
-            if (map.get("hash_field") != null && map.get("hash_field")[0].equals(HashGenerator.myWeekHash(pirate.getLogin() + pirate.getPassword()))) {
+            if (map.get("hash_field") != null && map.get("hash_field")[0].equals(HashGenerator.myWeakHash(pirate.getLogin() + pirate.getPassword()))) {
 //            String hash = HashGenerator.hashFrom(map.get("login_field")[0] + map.get("password_field")[0]);
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);

@@ -28,7 +28,7 @@ login_form.addEventListener("submit", function (e) {
 //    e.preventDefault();
     if(authenticatePirate()){
         const passwordInput = pirate.login + pirate.password;
-        hash_field.value = myWeekHash(passwordInput);
+        hash_field.value = myWeakHash(passwordInput);
 //        login_form.submit();
     } else {
         password_field.value = "";
@@ -36,7 +36,7 @@ login_form.addEventListener("submit", function (e) {
     }
 });
 
-function myWeekHash(data)
+function myWeakHash(data)
 {
     if (data.length == 0)
         return "";
